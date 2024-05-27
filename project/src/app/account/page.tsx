@@ -2,6 +2,7 @@
 import { useState } from "react";
 import Login from "./login/page";
 import { LOGIN_VIEW } from "@/interfaces/enums";
+import Register from "./register/page";
 
 export default function Account(){
     const [currentView, setCurrentView] = useState(LOGIN_VIEW.SIGN_IN)
@@ -11,7 +12,7 @@ export default function Account(){
             {currentView === LOGIN_VIEW.SIGN_IN ? (
                 <Login setCurrentView={setCurrentView} />
             ) : (
-                <div>Register</div>
+                <Register setCurrentView={setCurrentView} />
             )}
         </div>
     )
