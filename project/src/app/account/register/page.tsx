@@ -1,6 +1,7 @@
 import Button from "@/components/Button";
 import { LOGIN_VIEW } from "@/interfaces/enums";
 import { useEffect, useState } from "react";
+import signUp from "@/services/auth/singUp";
 
 interface IRegisterProps {
   setCurrentView: (view: LOGIN_VIEW) => void;
@@ -14,22 +15,17 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
 
-  const handleRegister = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     // implementar la lógica para el registro del usuario
     console.log("Registrando usuario...");
-    const user = {
-      userFirstName,
-      userLastName,
-      userEmail,
-      userPassword
+    const { status, message } = await signUp(userEmail, userPassword);
+    console.log("🚀 ~ handleRegister ~ user:")
+    if (status === 400 && message) {
+      setErrorMessage(message);
     }
-    console.log("🚀 ~ handleRegister ~ user:", user)
-    //  implementar lógica para iniciar sesión
-    try {
-      // Lógica para iniciar sesión utilizando los valores de email y password
-    } catch (error) {
-      setErrorMessage("Error al iniciar sesión. Verifica tus credenciales e inténtalo de nuevo.");
+    else {
+      setCurrentView(LOGIN_VIEW.SIGN_IN)
     }
   };
 
