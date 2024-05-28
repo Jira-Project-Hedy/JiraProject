@@ -2,6 +2,8 @@ import Button from "@/components/Button";
 import { LOGIN_VIEW } from "@/interfaces/enums";
 import { useEffect, useState } from "react";
 import signUp from "@/services/auth/singUp";
+import { toast } from "react-toastify";
+import { useRouter } from "next/navigation";
 
 interface IRegisterProps {
   setCurrentView: (view: LOGIN_VIEW) => void;
@@ -14,18 +16,19 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
   const [userPassword, setUserPassword] = useState<string>("")
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
+  const router = useRouter();
 
   const handleRegister = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // implementar la lógica para el registro del usuario
-    console.log("Registrando usuario...");
+
     const { status, message } = await signUp(userEmail, userPassword);
-    console.log("🚀 ~ handleRegister ~ user:")
+    
     if (status === 400 && message) {
-      setErrorMessage(message);
+      toast.error(message, { toastId: "fail" })
     }
     else {
-      setCurrentView(LOGIN_VIEW.SIGN_IN)
+      toast.success(message, { toastId: "register" })
+      router.push("/")
     }
   };
 
@@ -102,7 +105,6 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
                 required
               />
             </div>
-            {errorMessage && <span className="text-red-500">{errorMessage}</span>}
             <Button name="Sign up" isDisabled={isSubmitDisabled} />
             <Button 
               name="I have account" 
