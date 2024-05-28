@@ -4,7 +4,7 @@ import { LOGIN_VIEW } from "@/interfaces/enums";
 import Button from "@/components/Button";
 import signIn from "@/services/auth/singIn";
 import { useDataContext } from "@/context/data.context";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 interface ILoginProps {
     setCurrentView: (view: LOGIN_VIEW) => void;
@@ -16,6 +16,7 @@ interface ILoginProps {
     const [userPassword, setUserPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
+    const router = useRouter();
   
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -26,7 +27,7 @@ interface ILoginProps {
     }
     else {
         setUser(response!)
-        redirect("/")
+        router.push("/")
       }
     };
 
