@@ -3,12 +3,15 @@ import { useEffect, useState } from "react";
 import { LOGIN_VIEW } from "@/interfaces/enums";
 import Button from "@/components/Button";
 import signIn from "@/services/auth/singIn";
+import { useDataContext } from "@/context/data.context";
+import { redirect } from "next/navigation";
 
 interface ILoginProps {
     setCurrentView: (view: LOGIN_VIEW) => void;
   }
 
   const Login = ({ setCurrentView }: ILoginProps) => {
+    const { setUser } = useDataContext();
     const [userEmail, setUserEmail] = useState<string>("");
     const [userPassword, setUserPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -22,8 +25,8 @@ interface ILoginProps {
       setErrorMessage(errorMessage);
     }
     else {
-      // deberia guardar la response en un context
-      // redirect to home
+        setUser(response!)
+        redirect("/")
       }
     };
 
