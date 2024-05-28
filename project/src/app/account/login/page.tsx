@@ -5,6 +5,7 @@ import Button from "@/components/Button";
 import signIn from "@/services/auth/singIn";
 import { useDataContext } from "@/context/data.context";
 import { useRouter } from "next/navigation";
+import { toast } from "react-toastify";
 
 interface ILoginProps {
     setCurrentView: (view: LOGIN_VIEW) => void;
@@ -14,7 +15,6 @@ interface ILoginProps {
     const { setUser } = useDataContext();
     const [userEmail, setUserEmail] = useState<string>("");
     const [userPassword, setUserPassword] = useState<string>("");
-    const [errorMessage, setErrorMessage] = useState<string | null>(null);
     const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
     const router = useRouter();
   
@@ -23,10 +23,11 @@ interface ILoginProps {
       const { response, status, errorMessage } = await signIn(userEmail, userPassword)
 
     if (status === 400 && errorMessage) {
-      setErrorMessage(errorMessage);
+      toast.error(errorMessage, {toastId: "fail"})
     }
     else {
         setUser(response!)
+        toast.success("Login successful", {toastId: "success"})
         router.push("/")
       }
     };
@@ -79,7 +80,6 @@ interface ILoginProps {
                   required
                 />
               </div>
-              {errorMessage && <span className="text-red-500">{errorMessage}</span>}
               <Button name="Sign in" isDisabled={isSubmitDisabled} />
             </form>
             <div>
