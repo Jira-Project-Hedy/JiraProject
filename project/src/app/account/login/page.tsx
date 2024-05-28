@@ -20,14 +20,14 @@ interface ILoginProps {
   
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
-      const { response, status, errorMessage } = await signIn(userEmail, userPassword)
+      const { response, status, message } = await signIn(userEmail, userPassword)
 
-    if (status === 400 && errorMessage) {
-      toast.error(errorMessage, {toastId: "fail"})
+    if (status === 400 && message) {
+      toast.error(message, {toastId: "fail"})
     }
     else {
         setUser(response!)
-        toast.success("Login successful", {toastId: "success"})
+        toast.success(message, {toastId: "success"})
         router.push("/")
       }
     };
