@@ -11,6 +11,7 @@ interface ILoginProps {
     const [userEmail, setUserEmail] = useState<string>("");
     const [userPassword, setUserPassword] = useState<string>("");
     const [errorMessage, setErrorMessage] = useState<string | null>(null);
+    const [isSubmitDisabled, setIsSubmitDisabled] = useState<boolean>(true);
   
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
@@ -22,6 +23,15 @@ interface ILoginProps {
         setErrorMessage("Error al iniciar sesión. Verifica tus credenciales e inténtalo de nuevo.");
       }
     };
+
+    useEffect(() => {
+        if (userEmail && userPassword) {
+          setIsSubmitDisabled(false)
+        }
+        else {
+          setIsSubmitDisabled(true)
+        }
+      }, [userEmail, userPassword])
   
     return (
       <div id="login-pages" className="w-2/4">
@@ -30,10 +40,10 @@ interface ILoginProps {
             id="onboarding-form" 
             className="p-16 rounded-xl bg-gray-bg flex flex-col justify-center w-full text-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
           >
-              <h2 className="text-2xl font-bold	">
+              <h2 className="text-xl font-bold	">
               WELCOME BACK
               </h2>
-              <p className="text-xl">Log in to access an enhanced Jira experience.</p>
+              <p className="text-base">Log in to access an enhanced Jira experience.</p>
   
             <form className="mt-8" onSubmit={handleSubmit}>
               <div>
@@ -63,7 +73,7 @@ interface ILoginProps {
                 />
               </div>
               {errorMessage && <span className="text-red-500">{errorMessage}</span>}
-              <Button name="Sign in" />
+              <Button name="Sign in" isDisabled={isSubmitDisabled} />
             </form>
             <div>
               <button 
