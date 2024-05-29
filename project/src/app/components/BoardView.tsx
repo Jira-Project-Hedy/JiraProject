@@ -17,13 +17,13 @@ interface BoardViewProps {
 const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
   const [tasks, setTasks] = useState<Task[]>(initialTasks);
 
-  const addTask = (title: string, description: string) => {
+  const addTask = (title: string, description: string, status: Task['status']) => {
     const newTask: Task = {
       id: tasks.length + 1,
       title,
       description,
       completed: false,
-      status: 'todo',
+      status,
     };
     setTasks([...tasks, newTask]);
   };
@@ -51,10 +51,16 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
   };
 
   return (
-    <div className="flex flex-wrap justify-center gap-6">
+    <div className="flex flex-wrap justify-center gap-6 p-6">
       {['todo', 'inProgress', 'done'].map(status => (
-        <div key={status} className="flex-1 min-w-[300px] bg-white p-4 rounded-lg shadow-lg">
-          <h2 className="text-xl font-bold mb-4 text-center capitalize text-blue-600">{status.replace(/([A-Z])/g, ' $1')}</h2>
+        <div key={status} className="relative flex-1 min-w-[300px] bg-white p-4 rounded-lg shadow-lg">
+          <h2 
+            className="text-xl font-bold mb-4 text-center capitalize text-black cursor-pointer"
+            contentEditable
+            suppressContentEditableWarning
+          >
+            {status.replace(/([A-Z])/g, ' $1')}
+          </h2>
           <TaskList
             tasks={tasks.filter(task => task.status === status)}
             onEditTask={editTask}
@@ -62,14 +68,14 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
             onToggleTaskCompletion={toggleTaskCompletion}
             onMoveTask={moveTask}
           />
+          <button
+            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-4"
+            onClick={() => addTask('New Task', 'Description of new task', status as Task['status'])}
+          >
+            Add Task
+          </button>
         </div>
       ))}
-      <button
-        className="bg-white text-blue-500 hover:text-white hover:bg-blue-700 font-bold text-sm py-2 px-4 rounded-full shadow-md transition-all duration-300"
-        onClick={() => addTask('New Task', 'Description of new task')}
-      >
-        Add Task
-      </button>
     </div>
   );
 };

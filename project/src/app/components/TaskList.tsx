@@ -1,5 +1,5 @@
 // src/components/TaskList.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import { Task } from './BoardView';
 
 interface TaskListProps {
@@ -11,56 +11,135 @@ interface TaskListProps {
 }
 
 const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, onToggleTaskCompletion, onMoveTask }) => {
+  const [editingTaskId, setEditingTaskId] = useState<number | null>(null);
+  const [newTitle, setNewTitle] = useState<string>('');
+  const [newDescription, setNewDescription] = useState<string>('');
+  const [menuOpen, setMenuOpen] = useState<{ [key: number]: boolean }>({});
+
+  const handleEdit = (task: Task) => {
+    setEditingTaskId(task.id);
+    setNewTitle(task.title);
+    setNewDescription(task.description);
+  };
+
+  const handleSave = (id: number) => {
+    onEditTask(id, newTitle, newDescription);
+    setEditingTaskId(null);
+  };
+
+  const toggleMenu = (id: number) => {
+    setMenuOpen(prevState => ({ ...prevState, [id]: !prevState[id] }));
+  };
+
   return (
     <div>
       {tasks.map(task => (
-        <div key={task.id} className="bg-white p-4 rounded-lg shadow-md mb-4">
-          <h3 className="text-lg font-bold text-gray-800">{task.title}</h3>
-          <p className="text-gray-600">{task.description}</p>
-          <div className="flex space-x-2 mt-2">
-            <button
-              className="bg-indigo-500 hover:bg-indigo-700 text-white text-sm py-1 px-2 rounded"
-              onClick={() => onToggleTaskCompletion(task.id)}
-            >
-              {task.completed ? 'Uncomplete' : 'Complete'}
-            </button>
-            <button
-              className="bg-yellow-400 hover:bg-yellow-600 text-white text-sm py-1 px-2 rounded"
-              onClick={() => onEditTask(task.id, task.title, task.description)}
-            >
-              Edit
-            </button>
-            <button
-              className="bg-red-500 hover:bg-red-700 text-white text-sm py-1 px-2 rounded"
-              onClick={() => onDeleteTask(task.id)}
-            >
-              Delete
-            </button>
-            {task.status !== 'todo' && (
+        <div key={task.id} className="bg-gray-800 p-4 rounded-lg shadow-md mb-4 relative">
+          {editingTaskId === task.id ? (
+            <div className="flex flex-col">
+              <input
+                type="text"
+                className="border border-gray-300 p-2 rounded mb-2 w-full bg-white text-black"
+                value={newTitle}
+                onChange={e => setNewTitle(e.target.value)}
+              />
+              <textarea
+                className="border border-gray-300 p-2 rounded mb-2 w-full bg-white text-black"
+                value={newDescription}
+                onChange={e => setNewDescription(e.target.value)}
+              />
               <button
-                className="bg-blue-400 hover:bg-blue-600 text-white text-sm py-1 px-2 rounded"
-                onClick={() => onMoveTask(task.id, 'todo')}
+                className="bg-green-500 hover:bg-green-700 text-white text-sm py-1 px-2 rounded self-end"
+                onClick={() => handleSave(task.id)}
               >
-                Move to Todo
+                Save
               </button>
-            )}
-            {task.status !== 'inProgress' && (
-              <button
-                className="bg-purple-400 hover:bg-purple-600 text-white text-sm py-1 px-2 rounded"
-                onClick={() => onMoveTask(task.id, 'inProgress')}
+            </div>
+          ) : (
+            <>
+              <h3
+                className="text-lg font-bold text-white cursor-pointer"
+                onClick={() => handleEdit(task)}
               >
-                Move to In Progress
-              </button>
-            )}
-            {task.status !== 'done' && (
-              <button
-                className="bg-green-400 hover:bg-green-600 text-white text-sm py-1 px-2 rounded"
-                onClick={() => onMoveTask(task.id, 'done')}
-              >
-                Move to Done
-              </button>
-            )}
-          </div>
+                {task.title}
+              </h3>
+              <p className="text-gray-400">{task.description}</p>
+              <div className="absolute top-2 right-2">
+                <div className="relative">
+                  <button
+                    className="text-gray-500 hover:text-gray-300"
+                    onClick={() => toggleMenu(task.id)}
+                  >
+                    ⋮
+                  </button>
+                  {menuOpen[task.id] && (
+                    <div className="absolute right-0 mt-2 w-48 bg-gray-800 border border-gray-700 rounded shadow-md z-10">
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-700"
+                        onClick={() => {
+                          handleEdit(task);
+                          toggleMenu(task.id);
+                        }}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-700"
+                        onClick={() => {
+                          onToggleTaskCompletion(task.id);
+                          toggleMenu(task.id);
+                        }}
+                      >
+                        {task.completed ? 'Uncomplete' : 'Complete'}
+                      </button>
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-700"
+                        onClick={() => {
+                          onDeleteTask(task.id);
+                          toggleMenu(task.id);
+                        }}
+                      >
+                        Delete
+                      </button>
+                      {task.status !== 'todo' && (
+                        <button
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-700"
+                          onClick={() => {
+                            onMoveTask(task.id, 'todo');
+                            toggleMenu(task.id);
+                          }}
+                        >
+                          Move to Todo
+                        </button>
+                      )}
+                      {task.status !== 'inProgress' && (
+                        <button
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-700"
+                          onClick={() => {
+                            onMoveTask(task.id, 'inProgress');
+                            toggleMenu(task.id);
+                          }}
+                        >
+                          Move to In Progress
+                        </button>
+                      )}
+                      {task.status !== 'done' && (
+                        <button
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-400 hover:bg-gray-700"
+                          onClick={() => {
+                            onMoveTask(task.id, 'done');
+                            toggleMenu(task.id);
+                          }}
+                        >
+                          Move to Done
+                        </button>
+                      )}
+                    </div>
+                  )}
+                </div>
+              </div>
+            </>
+          )}
         </div>
       ))}
     </div>
