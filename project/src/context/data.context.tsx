@@ -12,7 +12,7 @@ interface IDataProvideProps {
   children: JSX.Element[] | JSX.Element | React.ReactNode;
 }
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 const DataContext = createContext<IDataContext>({
   user: null,

@@ -6,7 +6,7 @@ import { RESPONSE_STATUS } from "@/interfaces/enums";
 
 import ErrorHandler from "@/helper/errorHandler.helper";
 
-const auth = getAuth(firebase);
+const auth = getAuth(firebase.app);
 
 const logOut = async (): Promise<AuthResponse<User>> => {
     try {
