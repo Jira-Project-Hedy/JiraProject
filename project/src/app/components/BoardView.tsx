@@ -1,4 +1,4 @@
-// src/components/BoardView.tsx
+
 import React, { useState } from 'react';
 import TaskList from './TaskList';
 
