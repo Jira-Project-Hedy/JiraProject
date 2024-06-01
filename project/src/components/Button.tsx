@@ -14,8 +14,8 @@ const Button = ({ name, onClick, className, isDisabled=false, isLoading }: IButt
       type="submit"
       disabled={isDisabled}
       className={`w-full h-[100px] p-4 rounded-xl shadow-[0_3px_10px_rgb(0,0,0,0.2)]
-      ${isDisabled ? "bg-gray-bg-light text-white hover:bg-gray-bg-light cursor-not-allowed" : ""}
-      ${className ? className : "mb-8 mt-8 bg-black-btn hover:bg-black-hover hover:text-white text-xl font-medium text-gray-bg-light"}
+        ${isDisabled ? "bg-gray-300 text-gray-600 cursor-not-allowed" : ""}
+        ${className ? className : "mb-8 mt-8 bg-black hover:bg-gray-800 text-xl font-medium text-white"}
       `}
       onClick={onClick}
     >
