@@ -1,4 +1,3 @@
-// src/components/BoardView.tsx
 import React from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import TaskList from './TaskList';
@@ -38,17 +37,16 @@ const BoardView: React.FC = () => {
                 </h2>
                 <TaskList
                   tasks={tasks.filter((task) => task.status === status)}
-                  onEditTask={editTask}
-                  onDeleteTask={deleteTask}
-                  onMoveTask={moveTask}
                 />
                 {provided.placeholder}
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-4"
-                  onClick={() => addTask('New Task', status as Task['status'])}
-                >
-                  Add Task
-                </button>
+                {status === 'todo' && (
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-4"
+                    onClick={() => addTask('New Task', 'todo')}
+                  >
+                    Add Task
+                  </button>
+                )}
               </div>
             )}
           </Droppable>
