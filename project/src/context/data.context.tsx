@@ -1,7 +1,7 @@
-"use client";
-import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState} from "react";
-import { User, getAuth, onAuthStateChanged } from "firebase/auth";
-import firebase from "@/services/firebase";
+'use client';
+import { Dispatch, SetStateAction, createContext, useContext, useEffect, useState } from 'react';
+import { User, getAuth, onAuthStateChanged } from 'firebase/auth';
+import firebase from '@/services/firebase';
 import { collection, addDoc, getDocs, updateDoc, deleteDoc, doc, query, where } from 'firebase/firestore';
 
 interface Table {
@@ -28,6 +28,8 @@ interface IDataContext {
   editTask: (id: string, title: string) => void;
   deleteTask: (id: string) => void;
   moveTask: (id: string, newStatus: Task['status']) => void;
+  editTable: (id: string, name: string) => void;
+  deleteTable: (id: string) => void;
 }
 
 interface IDataProviderProps {
@@ -46,6 +48,8 @@ const DataContext = createContext<IDataContext>({
   editTask: () => {},
   deleteTask: () => {},
   moveTask: () => {},
+  editTable: () => {},
+  deleteTable: () => {},
 });
 
 export const DataProvider = ({ children }: IDataProviderProps) => {
@@ -60,7 +64,7 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
         // Fetch tables
         const tablesQuery = query(collection(firebase.db, 'tables'), where('userId', '==', user.uid));
         const tablesSnapshot = await getDocs(tablesQuery);
-        const userTables: Table[] = tablesSnapshot.docs.map(doc => ({
+        const userTables: Table[] = tablesSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         } as Table));
@@ -69,7 +73,7 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
         // Fetch tasks
         const tasksQuery = query(collection(firebase.db, 'tasks'), where('userId', '==', user.uid));
         const tasksSnapshot = await getDocs(tasksQuery);
-        const userTasks: Task[] = tasksSnapshot.docs.map(doc => ({
+        const userTasks: Task[] = tasksSnapshot.docs.map((doc) => ({
           id: doc.id,
           ...doc.data(),
         } as Task));
@@ -108,7 +112,7 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
     }
   };
 
-  const editTask = async (taskId: string, newTitle: any) => {
+  const editTask = async (taskId: string, newTitle: string) => {
     try {
       const taskDoc = doc(firebase.db, 'tasks', taskId);
       await updateDoc(taskDoc, { title: newTitle });
@@ -132,7 +136,7 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
     }
   };
 
-  const moveTask = async (taskId: string, newStatus: any) => {
+  const moveTask = async (taskId: string, newStatus: Task['status']) => {
     try {
       const taskDoc = doc(firebase.db, 'tasks', taskId);
       await updateDoc(taskDoc, { status: newStatus });
@@ -145,8 +149,31 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
     }
   };
 
+  const editTable = async (id: string, name: string) => {
+    try {
+      const tableDoc = doc(firebase.db, 'tables', id);
+      await updateDoc(tableDoc, { name });
+      setTables((prevTables) =>
+        prevTables.map((table) => (table.id === id ? { ...table, name } : table))
+      );
+    } catch (error: any) {
+      console.error("Error editing table:", error);
+    }
+  };
+
+  const deleteTable = async (id: string) => {
+    try {
+      const tableDoc = doc(firebase.db, 'tables', id);
+      await deleteDoc(tableDoc);
+      setTables((prevTables) => prevTables.filter((table) => table.id !== id));
+      setTasks((prevTasks) => prevTasks.filter((task) => task.tableId !== id));
+    } catch (error: any) {
+      console.error("Error deleting table:", error);
+    }
+  };
+
   return (
-    <DataContext.Provider value={{ user, tables, tasks, setUser, addTable, addTask, editTask, deleteTask, moveTask }}>
+    <DataContext.Provider value={{ user, tables, tasks, setUser, addTable, addTask, editTask, deleteTask, moveTask, editTable, deleteTable }}>
       {children}
     </DataContext.Provider>
   );
