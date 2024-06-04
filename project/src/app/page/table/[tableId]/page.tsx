@@ -1,6 +1,6 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import BoardView from '../../BoardView';
+import BoardView from '../../TaskView';
 import { useDataContext } from '@/context/data.context';
 import { useParams, useRouter } from 'next/navigation';
 import isAuth from '@/components/isAuth';

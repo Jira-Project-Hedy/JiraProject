@@ -1,7 +1,7 @@
 // src/app/page.tsx
 'use client';
 import React, { useEffect } from 'react';
-import BoardView from './BoardView';
+import BoardView from './TaskView';
 import isAuth from '@/components/isAuth';
 import { useDataContext } from '@/context/data.context';
 
