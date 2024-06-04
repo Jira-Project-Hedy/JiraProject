@@ -1,4 +1,4 @@
-
+//src/app/page/BoardView.tsx
 import React, { useState } from 'react';
 import TaskList from './TaskList';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
