@@ -1,22 +1,36 @@
-"use client"
-import React, { useState } from 'react';
+'use client';
+import React, { useState, useEffect } from 'react';
 import { useDataContext } from '@/context/data.context';
 import { useRouter } from 'next/navigation';
 import isAuth from '@/components/isAuth';
+import Loading from '@/components/Loading';
 
 const TablesView: React.FC = () => {
   const { tables, addTable } = useDataContext();
   const [newTableName, setNewTableName] = useState('');
+  const [isLoading, setIsLoading] = useState(true);
   const router = useRouter();
 
+  useEffect(() => {
+    if (tables.length > 0) {
+      setIsLoading(false);
+    }
+  }, [tables]);
+
   const handleAddTable = async () => {
+    setIsLoading(true);
     await addTable(newTableName);
     setNewTableName('');
+    setIsLoading(false);
   };
 
   const handleTableClick = (tableId: string) => {
     router.push(`table/${tableId}`);
   };
+
+  if (isLoading) {
+    return <Loading />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
