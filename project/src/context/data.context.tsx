@@ -87,11 +87,15 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
     try {
       const taskDoc = doc(firebase.db, 'tasks', taskId);
       await deleteDoc(taskDoc);
+
+      setTasks((prevTasks) => prevTasks.filter((task) => task.id !== taskId));
+  
       return { status: 'success', message: 'Task deleted successfully' };
     } catch (error: any) {
       return { status: 'error', message: error.message };
     }
   };
+  
   
   const moveTask = async (taskId: string, newStatus: any) => {
     try {
