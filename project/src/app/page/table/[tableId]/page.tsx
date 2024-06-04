@@ -4,6 +4,7 @@ import BoardView from '../../TaskView';
 import { useDataContext } from '@/context/data.context';
 import { useParams, useRouter } from 'next/navigation';
 import isAuth from '@/components/isAuth';
+import Loading from '@/components/Loading';
 
 const TablePage: React.FC = () => {
   const { tables, editTable, deleteTable } = useDataContext();
@@ -19,7 +20,7 @@ const TablePage: React.FC = () => {
     console.log('Table ID:', tableId);
   }, [tableId]);
 
-  if (!currentTable) return <div>Table not found</div>;
+  if (!currentTable) return <Loading />;
 
   const handleEdit = async () => {
     if (newTableName.trim() !== '') {
