@@ -98,7 +98,6 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
       const taskDoc = doc(firebase.db, 'tasks', taskId);
       await updateDoc(taskDoc, { status: newStatus });
   
-      // Actualizar el estado local de las tareas
       setTasks((prevTasks) =>
         prevTasks.map((task) =>
           task.id === taskId ? { ...task, status: newStatus } : task
