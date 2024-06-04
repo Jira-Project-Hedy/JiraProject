@@ -1,22 +1,20 @@
 // src/components/TaskList.tsx
 import React, { useState } from 'react';
 import { Draggable } from 'react-beautiful-dnd';
-import { Task } from './BoardView';
+import { useDataContext } from '@/context/data.context';
 
 interface TaskListProps {
   tasks: Task[];
-  onEditTask: (id: number, title: string) => void;
-  onDeleteTask: (id: number) => void;
-  onMoveTask: (id: number, newStatus: Task['status']) => void;
 }
 
-const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, onMoveTask }) => {
-  const [showOptions, setShowOptions] = useState<number | null>(null);
+const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
+  const [showOptions, setShowOptions] = useState<string | null>(null);
+  const { editTask, deleteTask, moveTask } = useDataContext();
 
   return (
     <div>
       {tasks.map((task, index) => (
-        <Draggable key={task.id} draggableId={task.id.toString()} index={index}>
+        <Draggable key={task.id} draggableId={task.id} index={index}>
           {(provided) => (
             <div
               ref={provided.innerRef}
@@ -28,7 +26,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, on
                 className="text-lg font-bold text-black cursor-pointer"
                 contentEditable
                 suppressContentEditableWarning
-                onBlur={(e) => onEditTask(task.id, e.currentTarget.textContent || '')}
+                onBlur={(e) => editTask(task.id, e.currentTarget.textContent || '')}
                 style={{ color: 'black' }}
               >
                 {task.title}
@@ -43,14 +41,14 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, on
                 <div className="absolute top-8 right-0 bg-white shadow-lg rounded p-2 z-10">
                   <button
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                    onClick={() => onDeleteTask(task.id)}
+                    onClick={() => deleteTask(task.id)}
                   >
                     Delete
                   </button>
                   {task.status !== 'todo' && (
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => onMoveTask(task.id, 'todo')}
+                      onClick={() => moveTask(task.id, 'todo')}
                     >
                       Move to Todo
                     </button>
@@ -58,7 +56,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, on
                   {task.status !== 'inProgress' && (
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => onMoveTask(task.id, 'inProgress')}
+                      onClick={() => moveTask(task.id, 'inProgress')}
                     >
                       Move to In Progress
                     </button>
@@ -66,7 +64,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, onEditTask, onDeleteTask, on
                   {task.status !== 'done' && (
                     <button
                       className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
-                      onClick={() => onMoveTask(task.id, 'done')}
+                      onClick={() => moveTask(task.id, 'done')}
                     >
                       Move to Done
                     </button>

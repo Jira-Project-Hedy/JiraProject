@@ -1,47 +1,11 @@
 // src/components/BoardView.tsx
-import React, { useState } from 'react';
-import TaskList from './TaskList';
+import React from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
+import TaskList from './TaskList';
+import { useDataContext } from '@/context/data.context';
 
-export interface Task {
-  id: number;
-  title: string;
-  completed: boolean;
-  status: 'todo' | 'inProgress' | 'done';
-}
-
-interface BoardViewProps {
-  initialTasks: Task[];
-}
-
-const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
-
-  const addTask = (title: string, status: Task['status']) => {
-    const newTask: Task = {
-      id: tasks.length + 1,
-      title,
-      completed: false,
-      status,
-    };
-    setTasks([...tasks, newTask]);
-  };
-
-  const editTask = (id: number, title: string) => {
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, title } : task
-    ));
-  };
-
-  const deleteTask = (id: number) => {
-    setTasks(tasks.filter(task => task.id !== id));
-  };
-
-  const moveTask = (id: number, newStatus: Task['status']) => {
-    setTasks(tasks.map(task =>
-      task.id === id ? { ...task, status: newStatus } : task
-    ));
-  };
+const BoardView: React.FC = () => {
+  const { tasks, addTask, editTask, deleteTask, moveTask } = useDataContext();
 
   const onDragEnd = (result: DropResult) => {
     if (!result.destination) return;
@@ -49,19 +13,14 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
     const { source, destination } = result;
 
     if (source.droppableId !== destination.droppableId || source.index !== destination.index) {
-      const updatedTasks = Array.from(tasks);
-      const [movedTask] = updatedTasks.splice(source.index, 1);
-      movedTask.status = destination.droppableId as Task['status'];
-      updatedTasks.splice(destination.index, 0, movedTask);
-
-      setTasks(updatedTasks);
+      moveTask(result.draggableId, destination.droppableId as Task['status']);
     }
   };
 
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-wrap justify-center gap-6 p-6">
-        {['todo', 'inProgress', 'done'].map(status => (
+        {['todo', 'inProgress', 'done'].map((status) => (
           <Droppable key={status} droppableId={status}>
             {(provided) => (
               <div
@@ -78,7 +37,7 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
                   {status.replace(/([A-Z])/g, ' $1')}
                 </h2>
                 <TaskList
-                  tasks={tasks.filter(task => task.status === status)}
+                  tasks={tasks.filter((task) => task.status === status)}
                   onEditTask={editTask}
                   onDeleteTask={deleteTask}
                   onMoveTask={moveTask}

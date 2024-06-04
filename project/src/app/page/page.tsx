@@ -1,13 +1,18 @@
-'use client'
-import React from 'react';
-import BoardView, { Task } from './BoardView';
+// src/app/page.tsx
+'use client';
+import React, { useEffect } from 'react';
+import BoardView from './BoardView';
+import isAuth from '@/components/isAuth';
+import { useDataContext } from '@/context/data.context';
 
 const Page: React.FC = () => {
-  const tasks: Task[] = [
-    { id: 1, title: 'Task 1', completed: false, status: 'todo' },
-    { id: 2, title: 'Task 2', completed: true, status: 'inProgress' },
-   
-  ];
+  const { user, tasks, setUser } = useDataContext();
+
+  useEffect(() => {
+    if (user) {
+      // tareas adicionales
+    }
+  }, [user]);
 
   return (
     <div className="min-h-screen bg-gradient-to-r from-blue-500 to-purple-600 p-6">
@@ -16,10 +21,10 @@ const Page: React.FC = () => {
         <p className="text-center text-white">Manage your tasks efficiently and effectively.</p>
       </header>
       <main className="flex flex-col items-center">
-        <BoardView initialTasks={tasks} />
+        <BoardView />
       </main>
     </div>
   );
 };
 
-export default Page;
+export default isAuth(Page);
