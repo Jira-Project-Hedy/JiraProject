@@ -2,6 +2,7 @@ import React from 'react';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
 import TaskList from './TaskList';
 import { useDataContext } from '@/context/data.context';
+import isAuth from '@/components/isAuth';
 
 interface BoardViewProps {
   tableId: string;
@@ -63,4 +64,4 @@ const BoardView: React.FC<BoardViewProps> = ({ tableId }) => {
   );
 };
 
-export default BoardView;
+export default isAuth(BoardView);
