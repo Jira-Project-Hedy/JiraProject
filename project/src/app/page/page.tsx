@@ -21,7 +21,6 @@ const Page: React.FC = () => {
         <p className="text-center text-white">Manage your tasks efficiently and effectively.</p>
       </header>
       <main className="flex flex-col items-center">
-        <BoardView />
       </main>
     </div>
   );
