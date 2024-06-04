@@ -12,7 +12,7 @@ const TablesView: React.FC = () => {
   const router = useRouter();
 
   useEffect(() => {
-    if (tables.length > 0) {
+    if (tables.length >= 0) {
       setIsLoading(false);
     }
   }, [tables]);

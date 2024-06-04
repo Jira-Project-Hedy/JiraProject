@@ -1,10 +1,10 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-import BoardView from '../../TaskView';
 import { useDataContext } from '@/context/data.context';
 import { useParams, useRouter } from 'next/navigation';
 import isAuth from '@/components/isAuth';
 import Loading from '@/components/Loading';
+import TaskView from '../../TaskView';
 
 const TablePage: React.FC = () => {
   const { tables, editTable, deleteTable } = useDataContext();
@@ -71,7 +71,7 @@ const TablePage: React.FC = () => {
         </button>
       </header>
       <main className="flex flex-col items-center">
-        <BoardView tableId={tableId as string} />
+        <TaskView tableId={tableId as string} />
       </main>
     </div>
   );
