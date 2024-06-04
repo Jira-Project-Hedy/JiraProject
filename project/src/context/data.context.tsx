@@ -163,12 +163,24 @@ export const DataProvider = ({ children }: IDataProviderProps) => {
 
   const deleteTable = async (id: string) => {
     try {
+      // Fetch all tasks related to the table
+      const tasksQuery = query(collection(firebase.db, 'tasks'), where('tableId', '==', id));
+      const tasksSnapshot = await getDocs(tasksQuery);
+
+      // Delete each task
+      const deleteTaskPromises = tasksSnapshot.docs.map((taskDoc) => deleteDoc(taskDoc.ref));
+      await Promise.all(deleteTaskPromises);
+
+      // Now delete the table
       const tableDoc = doc(firebase.db, 'tables', id);
       await deleteDoc(tableDoc);
+
+      // Update state
       setTables((prevTables) => prevTables.filter((table) => table.id !== id));
       setTasks((prevTasks) => prevTasks.filter((task) => task.tableId !== id));
+
     } catch (error: any) {
-      console.error("Error deleting table:", error);
+      console.error("Error deleting table and its tasks:", error);
     }
   };
 
