@@ -1,6 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
 
+
 const HomePage: React.FC = () => {
   return (
     <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-r from-blue-500 to-purple-600 text-white">
@@ -17,9 +18,6 @@ const HomePage: React.FC = () => {
           The first "Tasks" contains the pending tasks, the second "In Progress" column contains the tasks that are being carried out and the third and last "Done" column contains the tasks that have already been completed.
           To change columns click on the option points at the top of the task.
         </p>
-        <p className="text-lg mb-4 max-w-lg text-white drop-shadow-lg">
-          You will find that it is a simple and fast way to plan, don't hesitate to try it!
-        </p>
       </div>
       <div>
         <Link href="/page">
@@ -28,6 +26,7 @@ const HomePage: React.FC = () => {
           </button>
         </Link>
       </div>
+      <br />
     </div>
   );
 };
