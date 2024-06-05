@@ -1,5 +1,4 @@
-"use client"
-
+'use client'
 import { useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
@@ -18,13 +17,13 @@ const Navbar = () => {
   };
 
   return (
-    <nav id='navbar' className="w-full bg-white text-black shadow-md">
+    <nav id='navbar' className="w-full bg-white text-black shadow-md py-1">
       <div id='navbar-container' className="mx-auto px-6 flex justify-between items-center">
         <Link href="/">
           <Image 
-            src='/logo.png'
-            width={125}
-            height={125}
+            src='/logo.jpg'
+            width={80}
+            height={80}
             alt='logo'
           />
         </Link>
@@ -40,14 +39,14 @@ const Navbar = () => {
               </div>
               : (
                 <Link href="/account">
-                  <button className="p-4 hover:text-gray-bg-light hover:underline">
+                  <button className="p-2 px-4 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200">
                     Account
                   </button>
                 </Link>
               )
             }
             {isHover && user && (
-              <div className='overflow-hidden z-50 w-full absolute top-[102%] border rounded-lg border-gray-bg-light flex flex-col justify-center bg-white text-sm shadow-lg'>
+              <div className='overflow-hidden z-50 w-full absolute top-[102%] border rounded-lg border-gray-300 flex flex-col justify-center bg-white text-sm shadow-lg'>
                 <button
                   className='p-2 bg-white text-black hover:bg-red-500 hover:text-white transition-colors duration-200'
                   onClick={handleLogOut}
