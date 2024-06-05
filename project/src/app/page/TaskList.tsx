@@ -10,6 +10,8 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
   const [showOptions, setShowOptions] = useState<string | null>(null);
   const { editTask, deleteTask, moveTask } = useDataContext();
 
+
+
   return (
     <div>
       {tasks.map((task, index) => (
@@ -41,8 +43,9 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                   <button
                     className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
                     onClick={() => deleteTask(task.id)}
+
                   >
-                    Delete
+                    Move to In Progress
                   </button>
                   {task.status !== 'todo' && (
                     <button
@@ -73,6 +76,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
             </div>
           )}
         </Draggable>
+
       ))}
     </div>
   );
