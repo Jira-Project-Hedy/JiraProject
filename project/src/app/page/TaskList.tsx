@@ -45,7 +45,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks }) => {
                     onClick={() => deleteTask(task.id)}
 
                   >
-                    Move to In Progress
+                    Delete
                   </button>
                   {task.status !== 'todo' && (
                     <button
