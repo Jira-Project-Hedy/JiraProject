@@ -1,4 +1,4 @@
-// src/components/BoardView.tsx
+//src/app/page/BoardView.tsx
 import React, { useState } from 'react';
 import TaskList from './TaskList';
 import { DragDropContext, Droppable, DropResult } from 'react-beautiful-dnd';
@@ -7,7 +7,7 @@ export interface Task {
   id: number;
   title: string;
   completed: boolean;
-  status: 'todo' | 'inProgress' | 'done';
+  status: 'tasks' | 'inProgress' | 'done';
 }
 
 interface BoardViewProps {
@@ -61,7 +61,7 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <div className="flex flex-wrap justify-center gap-6 p-6">
-        {['todo', 'inProgress', 'done'].map(status => (
+        {['tasks', 'inProgress', 'done'].map(status => (
           <Droppable key={status} droppableId={status}>
             {(provided) => (
               <div
@@ -70,12 +70,10 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
                 className="relative flex-1 min-w-[300px] bg-white p-4 rounded-lg shadow-lg"
               >
                 <h2
-                  className="text-xl font-bold mb-4 text-center capitalize text-black cursor-pointer"
-                  contentEditable
-                  suppressContentEditableWarning
+                  className="text-xl font-bold mb-4 text-center capitalize text-black"
                   style={{ color: 'black' }}
                 >
-                  {status.replace(/([A-Z])/g, ' $1')}
+                  {status === 'tasks' ? 'Tasks' : status.replace(/([A-Z])/g, ' $1')}
                 </h2>
                 <TaskList
                   tasks={tasks.filter(task => task.status === status)}
@@ -84,12 +82,14 @@ const BoardView: React.FC<BoardViewProps> = ({ initialTasks }) => {
                   onMoveTask={moveTask}
                 />
                 {provided.placeholder}
-                <button
-                  className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-4"
-                  onClick={() => addTask('New Task', status as Task['status'])}
-                >
-                  Add Task
-                </button>
+                {status === 'tasks' && (
+                  <button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-full w-full mt-4"
+                    onClick={() => addTask('New Task', status as Task['status'])}
+                  >
+                    Add Task
+                  </button>
+                )}
               </div>
             )}
           </Droppable>
