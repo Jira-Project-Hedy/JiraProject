@@ -51,7 +51,7 @@ interface ILoginProps {
               <h2 className="text-xl font-bold	">
               WELCOME BACK
               </h2>
-              <p className="text-base">Log in to access an enhanced Jira experience.</p>
+              <p className="text-base">Log in to access an enhanced Jira Beta experience.</p>
   
             <form className="mt-8" onSubmit={handleSubmit}>
               <div>
