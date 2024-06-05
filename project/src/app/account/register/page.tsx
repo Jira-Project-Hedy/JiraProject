@@ -1,6 +1,7 @@
-import Button from "@/components/Button";
-import { LOGIN_VIEW } from "@/interfaces/enums";
+"use client"
 import { useEffect, useState } from "react";
+import { LOGIN_VIEW } from "@/interfaces/enums";
+import Button from "@/components/Button";
 import signUp from "@/services/auth/singUp";
 import { toast } from "react-toastify";
 import { useRouter } from "next/navigation";
@@ -42,18 +43,19 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
   }, [userEmail, userPassword, userFirstName, userLastName])
 
   return (
-    <div id="register-pages" className="w-2/4">
-      <div id="onboarding-card" className="min-w-full m-auto bg-gray-bg mt-16 mb-16">
+    <div 
+      id="register-pages" 
+      className="w-full min-h-screen flex items-center justify-center bg-gradient-to-b from-black to-gray-800"
+    >
+      <div id="onboarding-card" className="bg-white p-2 md:p-4 rounded-lg shadow-lg shadow-black">
         <div 
           id="onboarding-form" 
-          className="p-16 rounded-xl bg-gray-bg flex flex-col justify-center w-full text-center shadow-[rgba(0,_0,_0,_0.24)_0px_3px_8px]"
+          className="flex flex-col justify-center w-full text-center"
         >
-          <h2 className="text-2xl font-bold	">
-            BECOME A MEMBER
-          </h2>
-          <p className="text-xl">Create your Member profile, and get access to an Jira Beta experience.</p>
-          <form className="mt-8" onSubmit={handleRegister}>
-            <div>
+          <h2 className="text-lg font-bold mb-2 md:mb-4">BECOME A MEMBER</h2>
+          <p className="text-sm mb-4">Create your Member profile, and get access to an Jira Beta experience.</p>
+          <form onSubmit={handleRegister}>
+            <div className="mb-2 md:mb-4">
               <input
                 id="first-name"
                 type="text"
@@ -62,11 +64,11 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
                 title="Enter your first name"
                 value={userFirstName}
                 onChange={(e) => setUserFirstName(e.target.value)}
-                className="border m-2 text-xl bg-white p-4 w-full rounded-lg font-extralight"
+                className="border p-2 w-full rounded"
                 required
               />
             </div>
-            <div>
+            <div className="mb-2 md:mb-4">
               <input
                 id="last-name"
                 type="text"
@@ -75,11 +77,11 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
                 title="Enter your last name"
                 value={userLastName}
                 onChange={(e) => setUserLastName(e.target.value)}
-                className="border m-2 text-xl bg-white p-4 w-full rounded-lg font-extralight"
+                className="border p-2 w-full rounded"
                 required
               />
             </div>
-            <div>
+            <div className="mb-2 md:mb-4">
               <input
                 id="email"
                 type="email"
@@ -88,11 +90,11 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
                 title="Enter your email"
                 value={userEmail}
                 onChange={(e) => setUserEmail(e.target.value)}
-                className="border m-2 text-xl bg-white p-4 w-full rounded-lg font-extralight"
+                className="border p-2 w-full rounded"
                 required
               />
             </div>
-            <div>
+            <div className="mb-2 md:mb-4">
               <input
                 id="password"
                 type="password"
@@ -101,11 +103,15 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
                 title="Enter your password"
                 value={userPassword}
                 onChange={(e) => setUserPassword(e.target.value)}
-                className="border m-2 text-xl bg-white p-4 w-full rounded-lg font-extralight"
+                className="border p-2 w-full rounded"
                 required
               />
             </div>
-            <Button name="Sign up" isDisabled={isSubmitDisabled} />
+            <Button 
+              name="Sign up" 
+              isDisabled={isSubmitDisabled} 
+              className="text-sm px-3 py-1 transition-colors duration-200 hover:bg-gray-700" 
+            />
             <Button 
               name="I have account" 
               onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)} 
@@ -115,7 +121,7 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
         </div>
       </div>
     </div>
-  );;
+  );
 }
 
 export default Register;

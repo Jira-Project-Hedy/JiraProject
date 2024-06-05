@@ -39,7 +39,7 @@ const TablesView: React.FC = () => {
         <p className="text-center text-white">Manage your projects efficiently.</p>
       </header>
       <main className="flex flex-col items-center">
-        <div className="w-full max-w-2xl bg-white p-6 rounded-lg shadow-lg">
+        <div className="w-full max-w-md bg-white p-6 rounded-lg shadow-lg mb-8">
           <h2 className="text-2xl font-bold mb-4">Create New Table</h2>
           <input
             type="text"
@@ -55,7 +55,7 @@ const TablesView: React.FC = () => {
             Add Table
           </button>
         </div>
-        <div className="mt-8 w-full max-w-2xl">
+        <div className="w-full max-w-md">
           <h2 className="text-2xl font-bold mb-4 text-white">Your Tables</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {tables.map((table) => (
