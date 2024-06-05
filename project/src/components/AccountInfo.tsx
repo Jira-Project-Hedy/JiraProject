@@ -22,7 +22,6 @@ const AccountInfo = ({ user }: IAccountInfoProps) => {
         )}
       </div>
       <div>
-        <p className="font-semibold">Signed in as {user?.displayName || "User"}</p>
         <p>{user?.email}</p>
       </div>
     </div>

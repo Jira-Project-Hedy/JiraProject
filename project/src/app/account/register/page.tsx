@@ -112,11 +112,14 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
               isDisabled={isSubmitDisabled} 
               className="text-sm px-3 py-1 transition-colors duration-200 hover:bg-gray-700" 
             />
-            <Button 
-              name="I have account" 
+            <div className="mt-4">
+              <button 
               onClick={() => setCurrentView(LOGIN_VIEW.SIGN_IN)} 
-              className="bg-gray-bg border-black-btn border border-4 font-medium mb-2 mt-0 hover:font-bold"
-            />
+              className="text-sm text-blue-500 hover:underline mb-2 mt-0"
+              >
+              I have account
+            </button>
+            </div>
           </form>
         </div>
       </div>
