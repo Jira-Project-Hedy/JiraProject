@@ -51,7 +51,7 @@ const Register = ({ setCurrentView }: IRegisterProps) => {
           <h2 className="text-2xl font-bold	">
             BECOME A MEMBER
           </h2>
-          <p className="text-xl">Create your Member profile, and get access to an enhanced shopping experience.</p>
+          <p className="text-xl">Create your Member profile, and get access to an Jira Beta experience.</p>
           <form className="mt-8" onSubmit={handleRegister}>
             <div>
               <input

@@ -10,15 +10,15 @@ const HomePage: React.FC = () => {
             Welcome! Unify your tasks,<br />
             teammates and tools. <br />
           </h1>
-          <div className="space-y-4"> {/* Este div contiene los botones y añade espacio vertical entre ellos */}
+          <div className="space-y-4"> 
             <Link href="/usage">
               <button className="bg-white text-blue-500 hover:text-white hover:bg-blue-700 font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300">
                 How to use
               </button>
             </Link>
-            <Link href="/page">
+            <Link href="/page/table">
               <button className="bg-white text-blue-500 hover:text-white hover:bg-blue-700 font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300">
-                Create table
+              Go to Work
               </button>
             </Link>
           </div>
@@ -28,6 +28,7 @@ const HomePage: React.FC = () => {
             <img src="https://blog.vantagecircle.com/content/images/2022/04/Improving-Teamwork-in-the-workplace.png" alt="Image" className="max-w-md rounded-lg" />
           </div>
         </div>
+
       </div>
     </div>
   );

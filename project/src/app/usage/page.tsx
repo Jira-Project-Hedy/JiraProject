@@ -20,9 +20,9 @@ const HomePage: React.FC = () => {
         </p>
       </div>
       <div>
-        <Link href="/page">
+        <Link href="/page/table">
           <button className="bg-white text-blue-500 hover:text-white hover:bg-blue-700 font-bold py-3 px-6 rounded-full shadow-lg transition-all duration-300">
-            Create a table
+          Go to Work
           </button>
         </Link>
       </div>
